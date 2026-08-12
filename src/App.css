@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    background: #F4F6F8;
+    color: #1F2937;
+}
+
+#App {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.containerPrincipal {
+  width: 1200px;
+  max-width: 92%;
+  margin: 50px auto;
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 12px 35px rgba(0,0,0,.08);
+}
+
+#formulario {
+    margin-bottom: 28px;
+}
+
+.campo-linha {
+    display: flex;
+    gap: 12px;
+}
+
+.campo-linha input {
+    flex: 1;
+    height: 48px;
+    padding: 0 16px;
+    font-size: 15px;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    background: #FAFAFA;
+    transition: .25s;
+}
+
+.campo-linha input:focus {
+    outline: none;
+    border-color: #10B981;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(16,185,129,.15);
+}
+
+.campo-linha input::placeholder {
+    color: #9CA3AF;
+}
+
+.campo-linha button {
+    padding: 0 22px;
+    border: none;
+    border-radius: 10px;
+    background: #10B981;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.campo-linha button:hover {
+    background: #059669;
+}
+
+.campo-linha button:active {
+    transform: scale(.97);
+}
+
+#lista-section {
+    margin-top: 20px;
+}
+
+#lista-tarefas {
+    list-style: none;
+}
+
+.msg-vazia {
+    text-align: center;
+    color: #6B7280;
+    padding: 35px;
+    border: 2px dashed #D1D5DB;
+    border-radius: 12px;
+    background: #FCFCFC;
+}
+
+footer {
+    margin-top: auto;
+    padding: 25px;
+    text-align: center;
+    color: #6B7280;
+    font-size: 14px;
+}
+
+.app-leyout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-conteudo {
+    margin-left: 220px;
+    flex: 1;
+    min-width: 0;
+}

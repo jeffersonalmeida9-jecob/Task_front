@@ -1,0 +1,104 @@
+.colunas {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.coluna {
+  flex: 1;
+  min-width: 0;
+  min-height: 350px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.coluna h2 {
+  margin: 0 0 20px;
+  color: #1f2937;
+  text-align: center;
+}
+
+.card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+
+  padding: 16px 20px;
+  margin-bottom: 12px;
+
+  background-color: #e8faf2;
+  border-left: 5px solid #10b981;
+  border-radius: 12px;
+
+  transition: 0.2s;
+}
+
+.card:hover {
+  background: #d1fae5;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.18);
+}
+
+.card p {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.botoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.botoes button {
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #1f2937;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.botoes button:hover {
+  background: #d1fae5;
+}
+
+.botoes button:last-child {
+  color: #ef4444;
+}
+
+.botoes button:last-child:hover {
+  background: #ef4444;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .colunas {
+    flex-direction: column;
+  }
+
+  .coluna {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

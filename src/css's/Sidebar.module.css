@@ -1,0 +1,125 @@
+.sidebar {
+    width: 220px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #10B981, #059669);
+    padding: 24px 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    box-sizing: border-box;
+    border: none;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.10);
+}
+
+
+/* Logo */
+
+.logo h1 {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+
+/* Navegação */
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+/* Links */
+
+.link {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: 2px solid transparent;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Hover */
+
+.link:hover {
+    background: #EDE9FE;
+    color: #6D28D9;
+    border-color: #8B5CF6;
+    transform: translateX(3px);
+    box-shadow: 0 6px 14px rgba(124, 58, 237, 0.20);
+}
+
+
+/* Link ativo */
+
+.ativo {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    color: white;
+    font-weight: 700;
+    border: 2px solid #6D28D9;
+    transform: translateX(3px);
+    box-shadow: 0 8px 18px rgba(124, 58, 237, 0.30);
+}
+
+
+/* Foco pelo teclado */
+
+.link:focus-visible {
+    outline: none;
+    background: #EDE9FE;
+    color: #6D28D9;
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.20);
+}
+
+/* Botão Sair */
+
+.btnLogout {
+    margin-top: auto;
+    width: 100%;
+    padding: 11px 14px;
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btnLogout:hover {
+    background: #DC2626;
+    border-color: #B91C1C;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(185, 28, 28, 0.3);
+}
+
+.btnLogout:active {
+    transform: translateY(0);
+}
+
+.btnLogout:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.3);
+}
