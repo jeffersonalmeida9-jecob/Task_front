@@ -1,10 +1,8 @@
 import "../App.css";
-import Kanban from "../fragmentos/Kanban";
-import Header from "../fragmentos/Header";
-//import ListaTarefas from "../fragmentos/ListaTarefas";
+import Header from "../fragmentos/Header2";
+import ListaTarefas from "../fragmentos/ListaTarefas";
 import { useState, useEffect } from "react";
 import axios from "axios"
-
 
 async function consultarCEP(cep) {
   try {
@@ -18,19 +16,10 @@ async function consultarCEP(cep) {
 };
 
 function TarefaV1() {
-
   const [cepData, setCepData] = useState("");
   const [proximoId, setProximoId] = useState(1);
+  //const [endereco, setEndereco] = useState(null)
 
-  function moverTarefa(id, novaColuna) {
-    setTarefas(
-      tarefas.map((tarefa) =>
-        tarefa.id === id
-          ? { ...tarefa, coluna: novaColuna }
-          : tarefa
-      )
-    );
-  }
 
   const [tarefas, setTarefas] = useState(() => {
     const salvo = localStorage.getItem("d_salvos");
@@ -42,7 +31,6 @@ function TarefaV1() {
       setProximoId(dados[dados.length - 1].id + 1);
     }
     return Array.isArray(dados) ? dados : [];
-    
   });
 
   const [texto, setTexto] = useState("");
@@ -51,18 +39,20 @@ function TarefaV1() {
     localStorage.setItem('d_salvos', JSON.stringify(tarefas));
   }, [tarefas]);
 
-   const afazer = tarefas.filter(
-    (tarefa) => tarefa.coluna === "afazer"
-  ).length;
+  const total = tarefas.length;
+  const concluidas = tarefas.filter((tarefa) => tarefa.concluida).length;
+  const pendentes = tarefas.filter((tarefa) => !tarefa.concluida).length;
 
-  const andamento = tarefas.filter(
-    (tarefa) => tarefa.coluna === "andamento"
-  ).length;
-
-  const concluidas = tarefas.filter(
-    (tarefa) => tarefa.coluna === "concluida"
-  ).length;
-
+  const [filtro, setFiltro] = useState("todas");
+  const tarefasFiltradas = tarefas.filter((tarefa) => {
+    if (filtro === "pendentes") {
+      return !tarefa.concluida;
+    }
+    if (filtro === "concluidas") {
+      return tarefa.concluida;
+    }
+    return true;
+  });
 
   async function adicionarTarefa() {
     if (texto.trim() === "") return;
@@ -76,7 +66,6 @@ function TarefaV1() {
       estado: endereco?.uf,
       concluida: false,
       prioridade: "media",
-      coluna: 'afazer',
     };
 
     setTarefas([...tarefas, novaTarefa]);
@@ -89,50 +78,50 @@ function TarefaV1() {
     setTarefas(tarefas.filter((tarefa) => tarefa.id !== id));
   }
 
+  function concluirTarefa(id) {
+    setTarefas(
+      tarefas.map((tarefa) =>
+        tarefa.id === id ? { ...tarefa, concluida: !tarefa.concluida } : tarefa,
+      ),
+    );
+  }
+
   return (
     <div id="App">
       <Header
-        titulo="TaskFlow - Mini Kanban"
+        titulo="TaskFlow"
         subtitulo="Organize suas tarefas"
-        afazer={afazer}
-        andamento={andamento}
+        total={total}
+        pendentes={pendentes}
         concluidas={concluidas}
+        filtro={filtro}
+        setFiltro={setFiltro}
       />
-
-      <div className="containerPrincipal">
+      <main className="containerPrincipal">
         <section id="formulario">
           <div className="campo-linha">
-
+            
             <input
               type="text"
               placeholder="Tarefa..."
               value={texto}
               onChange={(e) => setTexto(e.target.value)}
-              onKeyDown={(e) =>
-                e.key === "Enter" && adicionarTarefa()
-              }
+              onKeyDown={(e) => e.key === "Enter" && adicionarTarefa()}
             />
-
-            <input
-              type="text"
-              placeholder="Digite o CEP"
-              value={cepData}
-              onChange={(e) => setCepData(e.target.value)}
-            />
-
-            <button onClick={adicionarTarefa}>Adicionar</button>
-          
-          </div>
+            <input 
+          type="text"
+          placeholder='Digite o CEP'
+          value={cepData}
+          onChange={(e) => setCepData(e.target.value)}
+           />
+            <button onClick={adicionarTarefa}>Adicionar</button>          </div>
         </section>
-
-        <Kanban
-          tarefas={tarefas}
-          setTarefas={setTarefas}
-          moverTarefa={moverTarefa}
-          deletarTarefa={deletarTarefa}
+        <ListaTarefas
+          tarefas={tarefasFiltradas}
+          onDeletar={deletarTarefa}
+          onConcluir={concluirTarefa}
         />
-      </div>
-
+      </main>
       <footer>
         <p>Jefferson Kauã</p>
       </footer>

@@ -1,79 +1,231 @@
+import { useState } from "react";
 import styles from "../css's/Kanban.module.css";
+import ModalTarefa from "../components/ModalTarefa";
+import "../css's/Kanban.css";
 
-function Kanban({ tarefas, moverTarefa, deletarTarefa }) {
+function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa }) {
+  const [modalAberto, setModalAberto] = useState(false);
+  const [tarefaEditando, setTarefaEditando] = useState(null);
+  const [colunaAtiva, setColunaAtiva] = useState("afazer");
+
+  function abrirModalCriar(coluna) {
+    setTarefaEditando(null);
+    setColunaAtiva(coluna);
+    setModalAberto(true);
+  }
+
+  function abrirModalEditar(tarefa) {
+    setTarefaEditando(tarefa);
+    setColunaAtiva(tarefa.coluna);
+    setModalAberto(true);
+  }
+
+  function salvarTarefa(dados) {
+    if (dados.id) {
+      // EDITAR
+      setTarefas(
+        tarefas.map((tarefa) =>
+          tarefa.id === dados.id
+            ? { ...tarefa, ...dados }
+            : tarefa
+        )
+      );
+    } else {
+      // CRIAR
+      setTarefas([
+        ...tarefas,
+        {
+          ...dados,
+          id: Date.now(),
+          coluna: dados.coluna || colunaAtiva,
+        },
+      ]);
+    }
+
+    setModalAberto(false);
+    setTarefaEditando(null);
+  }
+
   return (
     <div className={styles.colunas}>
 
+      {/* A FAZER */}
       <div className={styles.coluna}>
-        <h2>A Fazer</h2>
+        <div className="kanban-coluna-header">
+          <h2>A Fazer</h2>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              alignItems: "center",
+            }}
+          >
+            <span className="kanban-contador">
+              {
+                tarefas.filter(
+                  (tarefa) => tarefa.coluna === "afazer"
+                ).length
+              }
+            </span>
+
+            <button
+              className="kanban-btn-add"
+              onClick={() => abrirModalCriar("afazer")}
+            >
+              +
+            </button>
+          </div>
+        </div>
 
         {tarefas
           .filter((tarefa) => tarefa.coluna === "afazer")
           .map((tarefa) => (
             <div className={styles.card} key={tarefa.id}>
-              <div className={styles.conteudo}>
+              <div
+                className={styles.conteudo}
+                onClick={() => abrirModalEditar(tarefa)}
+              >
                 <p>{tarefa.texto}</p>
+
                 <span className={styles.localizacao}>
-                  📍{tarefa.cidade} - {tarefa.estado}
+                  📍 {tarefa.cidade} - {tarefa.estado}
                 </span>
-              </div>  
+              </div>
 
               <div className={styles.botoes}>
-                <button onClick={() => moverTarefa(tarefa.id, "andamento")}>Mover →</button>
-                <button onClick={() =>deletarTarefa(tarefa.id)}>X</button>
+                <button
+                  onClick={() =>
+                    moverTarefa(tarefa.id, "andamento")
+                  }
+                >
+                  Mover →
+                </button>
+
+                <button
+                  onClick={() => deletarTarefa(tarefa.id)}
+                >
+                  X
+                </button>
               </div>
             </div>
-          ))
-        }
+          ))}
       </div>
 
+      {/* EM ANDAMENTO */}
       <div className={styles.coluna}>
-        <h2>Em Andamento</h2>
+        <div className="kanban-coluna-header">
+          <h2>Em Andamento</h2>
+
+          <button
+            className="kanban-btn-add"
+            onClick={() => abrirModalCriar("andamento")}
+          >
+            +
+          </button>
+        </div>
 
         {tarefas
           .filter((tarefa) => tarefa.coluna === "andamento")
           .map((tarefa) => (
             <div className={styles.card} key={tarefa.id}>
-              <div className={styles.conteudo}>
+              <div
+                className={styles.conteudo}
+                onClick={() => abrirModalEditar(tarefa)}
+              >
                 <p>{tarefa.texto}</p>
+
                 <span className={styles.localizacao}>
-                  📍{tarefa.cidade} - {tarefa.estado}
+                  📍 {tarefa.cidade} - {tarefa.estado}
                 </span>
               </div>
 
               <div className={styles.botoes}>
-                <button onClick={() =>moverTarefa(tarefa.id, "afazer")}> ← Mover</button>
-                <button onClick={() =>moverTarefa(tarefa.id, "concluida")}>Mover →</button>
-                <button onClick={() =>deletarTarefa(tarefa.id)}>X</button>
+                <button
+                  onClick={() =>
+                    moverTarefa(tarefa.id, "afazer")
+                  }
+                >
+                  ← Mover
+                </button>
+
+                <button
+                  onClick={() =>
+                    moverTarefa(tarefa.id, "concluida")
+                  }
+                >
+                  Mover →
+                </button>
+
+                <button
+                  onClick={() => deletarTarefa(tarefa.id)}
+                >
+                  X
+                </button>
               </div>
             </div>
-          ))
-        }
+          ))}
       </div>
-
 
       {/* CONCLUÍDO */}
       <div className={styles.coluna}>
-        <h2>Concluído</h2>
+        <div className="kanban-coluna-header">
+          <h2>Concluído</h2>
+
+          <button
+            className="kanban-btn-add"
+            onClick={() => abrirModalCriar("concluida")}
+          >
+            +
+          </button>
+        </div>
 
         {tarefas
           .filter((tarefa) => tarefa.coluna === "concluida")
           .map((tarefa) => (
             <div className={styles.card} key={tarefa.id}>
-              <div className={styles.conteudo}>
+              <div
+                className={styles.conteudo}
+                onClick={() => abrirModalEditar(tarefa)}
+              >
                 <p>{tarefa.texto}</p>
+
                 <span className={styles.localizacao}>
-                  📍{tarefa.cidade} - {tarefa.estado}
+                  📍 {tarefa.cidade} - {tarefa.estado}
                 </span>
               </div>
+
               <div className={styles.botoes}>
-                <button onClick={() => moverTarefa(tarefa.id, "andamento")}>← Mover</button>
-                <button onClick={() => deletarTarefa(tarefa.id)}>X</button>
+                <button
+                  onClick={() =>
+                    moverTarefa(tarefa.id, "andamento")
+                  }
+                >
+                  ← Mover
+                </button>
+
+                <button
+                  onClick={() => deletarTarefa(tarefa.id)}
+                >
+                  X
+                </button>
               </div>
             </div>
-          ))
-        }
+          ))}
       </div>
+
+      {/* MODAL */}
+      {modalAberto && (
+        <ModalTarefa
+          tarefa={tarefaEditando}
+          coluna={colunaAtiva}
+          onSalvar={salvarTarefa}
+          onFechar={() => {
+            setModalAberto(false);
+            setTarefaEditando(null);
+          }}
+        />
+      )}
     </div>
   );
 }
