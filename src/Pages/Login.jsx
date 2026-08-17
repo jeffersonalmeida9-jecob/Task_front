@@ -30,7 +30,6 @@ function Login() {
                 <h1 className='login-logo'>TaskFlow</h1>
                 <p className='login-subtitulo'>Faça login para continuar</p>
 
-                {/* Input de usuário — estado controlado */}
                 <input 
                     className='login-input' 
                     type='text'
@@ -38,7 +37,6 @@ function Login() {
                     onChange={e => setUsuario(e.target.value)} 
                 />
                 
-                {/* Input de senha — type='password' oculta os caracteres */}
                 <input 
                     className='login-input' 
                     type='password'
@@ -47,7 +45,6 @@ function Login() {
                     onKeyDown={e => e.key === 'Enter' && handleLogin()} 
                 />
 
-                {/* Mensagem de erro — renderização condicional com && */}
                 {erro && 
                 <p className='login-erro'>{erro}</p>}
                 <button className='login-btn' onClick={handleLogin}>Entrar</button>

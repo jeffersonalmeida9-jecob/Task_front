@@ -14,15 +14,17 @@ function Sidebar() {
             <nav className={styles.nav}>
                 {logado && (
                     <>
-                        <NavLink to='/taskflow' className={linkClass}>TaskFlow</NavLink>
-                        <NavLink to='/kanban' className={linkClass}>kanban</NavLink>
+                        <NavLink to='/' className={linkClass}>kanban</NavLink>
                         <NavLink to='/sobre' className={linkClass}>Sobre</NavLink>
                         <button className={styles.btnLogout}onClick={logout} >Sair</button>
                     </>
                 )}
     
-                {!logado 
-                && <NavLink to='/Login' className={linkClass}>Login</NavLink>}
+                {!logado && 
+                    <>
+                        <NavLink to='/Login' className={linkClass}>Login</NavLink>
+                        <NavLink to='/sobre' className={linkClass}>Sobre</NavLink>
+                    </>}
             </nav>
         </aside>
     );

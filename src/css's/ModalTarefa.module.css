@@ -1,58 +1,133 @@
 .overlay {
-position: fixed; /* fixo independente do scroll */
-inset: 0; /* top:0 right:0 bottom:0 left:0 */
-background: rgba(0,0,0,0.6);
-backdrop-filter: blur(4px); /* desfoca o conteúdo atrás */
-display: flex;
-align-items: center;
-justify-content: center;
-z-index: 100; /* acima de tudo */
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 78, 59, 0.25);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
 }
-
-/* Card: o painel branco com o formulário */
 
 .card {
-background: #1B2A3B;
-border: 1px solid #1E3A5F;
-border-radius: 12px;
-padding: 28px 32px;
-width: 100%;
-max-width: 420px;
-display: flex;
-flex-direction: column;
-gap: 14px;
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: #FFFFFF;
+    border: 1px solid #D1FAE5;
+    border-radius: 12px;
+    box-shadow:
+        0 12px 30px rgba(5, 150, 105, 0.12);
+}
+.card h2 {
+    margin: 0;
+    color: #059669;
+    font-size: 1.2rem;
 }
 
-.card h2 { 
-    color: #F5A623; font-size: 1.2rem; 
+.card input,
+.card select {
+    width: 100%;
+    background: #F8FAFC;
+    color: #064E3B;
+    border: 1px solid #D1FAE5;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition:
+        border-color .25s,
+        box-shadow .25s;
 }
 
-.card input, .card select {
-background: #0D1B2A; color: #E2E8F0;
-border: 1px solid #334155; border-radius: 6px;
-padding: 10px 14px; font-size: 1rem;
-font-family: inherit; outline: none;
+.card input::placeholder {
+    color: #94A3B8;
 }
 
-.card input:focus, .card select:focus {
-     border-color: #38BDF8; 
+.card input:focus,
+.card select:focus {
+    background: #FFFFFF;
+    border-color: #8B5CF6;
+    box-shadow:
+        0 0 0 3px rgba(139, 92, 246, 0.10);
 }
 
 .cidade {
-    color: #64748B; font-size: 0.8rem; 
+    color: #64748B;
+    font-size: 0.8rem;
 }
 
 .botoes {
-    display: flex; gap: 10px; justify-content: flex-end; 
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.botoes button {
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background .25s,
+        border-color .25s,
+        color .25s,
+        transform .2s;
 }
 
 .botoes button:first-child {
-background: none; border: 1px solid #334155;
-color: #94A3B8; border-radius: 6px; padding: 9px 18px; cursor: pointer;
+    background: #FFFFFF;
+    border: 1px solid #D1FAE5;
+    color: #64748B;
+}
+
+.botoes button:first-child:hover {
+    color: #7C3AED;
+    border-color: #C4B5FD;
 }
 
 .botoes button:last-child {
-background: #1B5E9A; color: white; border: none;
-border-radius: 6px; padding: 9px 18px;
-font-weight: 700; cursor: pointer;
+    background: #059669;
+    color: #FFFFFF;
+    border: 1px solid #059669;
+}
+
+.botoes button:last-child:hover {
+    background: #7C3AED;
+    border-color: #7C3AED;
+    transform: translateY(-1px);
+}
+
+.botoes button:active {
+    transform: scale(.97);
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 500px) {
+
+    .overlay {
+        padding: 15px;
+    }
+
+    .card {
+        padding: 24px 20px;
+    }
+
+    .botoes {
+        flex-direction: column-reverse;
+    }
+
+    .botoes button {
+        width: 100%;
+    }
 }
