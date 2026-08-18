@@ -111,23 +111,90 @@
 }
 
 
-/* RESPONSIVO */
+
+/* Responsividade */
 
 @media (max-width: 500px) {
-
     .overlay {
-        padding: 15px;
+        padding: 12px;
+        align-items: center;
     }
 
     .card {
-        padding: 24px 20px;
+        width: 100%;
+        max-width: 100%;
+        padding: 22px 18px;
+        gap: 12px;
+        border-radius: 10px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .card h2 {
+        font-size: 1.1rem;
+    }
+
+    .card input,
+    .card select {
+        box-sizing: border-box;
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    .cidade {
+        font-size: 0.75rem;
     }
 
     .botoes {
         flex-direction: column-reverse;
+        gap: 8px;
+        margin-top: 6px;
     }
 
     .botoes button {
         width: 100%;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .overlay {
+        padding: 8px;
+    }
+
+    .card {
+        padding: 18px 14px;
+        gap: 10px;
+        border-radius: 8px;
+    }
+
+    .card h2 {
+        font-size: 1rem;
+    }
+
+    .card input,
+    .card select {
+        padding: 9px 10px;
+        font-size: 0.9rem;
+    }
+
+    .botoes button {
+        padding: 9px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-height: 600px) {
+    .overlay {
+        align-items: flex-start;
+        overflow-y: auto;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .card {
+        max-height: none;
+        margin: auto 0;
     }
 }

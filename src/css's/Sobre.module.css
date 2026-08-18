@@ -52,16 +52,74 @@
     color: #8B5CF6;
 }
 
+/* Responsividade */
+
 @media (max-width: 600px) {
     .sobre {
-        padding: 25px 15px;
+        min-height: 100vh;
+        padding: 24px 14px;
+        box-sizing: border-box;
     }
 
     .container {
-        padding: 25px 20px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 24px 18px;
+        border-radius: 10px;
     }
 
     .container h1 {
-        font-size: 1.7rem;
+        font-size: 1.6rem;
+        margin-bottom: 16px;
+    }
+
+    .container h2 {
+        margin: 24px 0 10px;
+        font-size: 1.1rem;
+    }
+
+    .container p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+
+    .container ul {
+        padding-left: 18px;
+        font-size: 0.95rem;
+    }
+
+    .container li {
+        margin-bottom: 7px;
+    }
+}
+
+@media (max-width: 400px) {
+    .sobre {
+        padding: 18px 10px;
+    }
+
+    .container {
+        padding: 20px 14px;
+        border-radius: 8px;
+    }
+
+    .container h1 {
+        font-size: 1.4rem;
+    }
+
+    .container h2 {
+        font-size: 1rem;
+        margin-top: 20px;
+    }
+
+    .container p,
+    .container ul {
+        font-size: 0.9rem;
+    }
+
+    .container p {
+        line-height: 1.55;
     }
 }

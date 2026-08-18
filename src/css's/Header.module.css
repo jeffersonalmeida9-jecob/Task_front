@@ -81,3 +81,63 @@
     transform: translateY(-3px) scale(1.03);
     box-shadow: 0 10px 22px rgba(124, 58, 237, .35);
 }
+
+@media (max-width: 768px) {
+    .header {
+        padding: 24px 16px;
+    }
+
+    .logo h1 {
+        font-size: 1.8rem;
+    }
+
+    .logo p {
+        font-size: 0.95rem;
+    }
+
+    .contadores {
+        gap: 8px;
+        margin: 16px 0;
+    }
+
+    .contadores button {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 20px 12px;
+    }
+
+    .logo h1 {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+
+    .logo p {
+        font-size: 0.85rem;
+    }
+
+    .contadores {
+        flex-direction: column;
+        gap: 8px;
+        margin: 14px 0;
+    }
+
+    .contadores button {
+        width: 100%;
+        padding: 11px;
+    }
+
+    .contadores button:hover {
+        transform: none;
+    }
+
+    .total.ativoTotal,
+    .pendentes.ativoPendentes,
+    .concluidas.ativoConcluidas {
+        transform: scale(1.01);
+    }
+}

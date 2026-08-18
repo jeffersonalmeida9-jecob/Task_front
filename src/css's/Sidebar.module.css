@@ -120,3 +120,99 @@
     box-shadow:
         0 0 0 3px rgba(255, 255, 255, 0.3);
 }
+
+/* Responsividade */
+
+@media (max-width: 900px) {
+    .sidebar {
+        width: 180px;
+        padding: 20px 12px;
+        gap: 24px;
+    }
+
+    .logo h1 {
+        font-size: 1.2rem;
+    }
+
+    .link {
+        padding: 9px 11px;
+        font-size: 0.9rem;
+    }
+
+    .btnLogout {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        height: auto;
+        position: relative;
+        padding: 14px 12px;
+        gap: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    }
+
+    .logo {
+        text-align: center;
+    }
+
+    .logo h1 {
+        font-size: 1.15rem;
+    }
+
+    .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .link {
+        padding: 8px 10px;
+        font-size: 0.82rem;
+        text-align: center;
+    }
+
+    .link:hover,
+    .ativo {
+        transform: none;
+    }
+
+    .btnLogout {
+        width: 100%;
+        margin-top: 4px;
+        padding: 9px 12px;
+        font-size: 0.85rem;
+    }
+
+    .btnLogout:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 400px) {
+    .sidebar {
+        padding: 12px 8px;
+    }
+
+    .logo h1 {
+        font-size: 1.05rem;
+    }
+
+    .nav {
+        gap: 5px;
+    }
+
+    .link {
+        padding: 7px 8px;
+        font-size: 0.78rem;
+    }
+
+    .btnLogout {
+        font-size: 0.8rem;
+    }
+}

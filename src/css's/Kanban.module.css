@@ -184,13 +184,126 @@
   box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
 }
 
-@media (max-width: 900px) {
-  .colunas {
-    flex-direction: column;
-    gap: 16px;
-  }
+/* Responsividade */
 
-  .coluna {
-    width: 100%;
-  }
+@media (max-width: 900px) {
+    .colunas {
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 20px;
+    }
+
+    .coluna {
+        width: 100%;
+        min-height: 250px;
+        padding: 16px;
+    }
+
+    .coluna h2 {
+        font-size: 1.1rem;
+        margin-bottom: 16px;
+    }
+
+    .card {
+        padding: 14px;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        font-size: 15px;
+    }
+
+    .botoes {
+        gap: 6px;
+        margin-top: 14px;
+        padding-top: 10px;
+    }
+
+    .botoes button {
+        width: 60px;
+        height: 30px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .colunas {
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .coluna {
+        padding: 12px;
+        min-height: 200px;
+        border-radius: 10px;
+    }
+
+    .coluna h2 {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+
+    .card {
+        padding: 12px;
+        border-left-width: 4px;
+        border-radius: 10px;
+    }
+
+    .card p {
+        font-size: 14px;
+        line-height: 1.35;
+    }
+
+    .prioridade {
+        font-size: 0.68rem;
+        padding: 4px 8px;
+    }
+
+    .localizacao {
+        font-size: 12px;
+    }
+
+    .botoes {
+        justify-content: stretch;
+        gap: 6px;
+    }
+
+    .botoes button {
+        flex: 1;
+        width: auto;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .filtro {
+        margin-bottom: 12px;
+        padding: 9px;
+        font-size: 12px;
+    }
+
+    .card:hover,
+    .card-alta:hover,
+    .card-media:hover,
+    .card-baixa:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 400px) {
+    .coluna {
+        padding: 10px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+
+    .card p {
+        font-size: 13px;
+    }
+
+    .botoes button {
+        height: 30px;
+        font-size: 11px;
+    }
 }

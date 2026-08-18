@@ -110,3 +110,109 @@
     background: #EF4444;
     color: white;
 }
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+    .tarefa {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .conteudoTarefa {
+        gap: 4px;
+    }
+
+    .textoTarefa,
+    .textoTarefaConcluido {
+        font-size: 15px;
+    }
+
+    .localizacao {
+        font-size: 0.75rem;
+    }
+
+    .acoesTarefa {
+        gap: 8px;
+    }
+
+    .badge-prioridade {
+        margin-right: 4px;
+        padding: 5px 9px;
+        font-size: 10px;
+    }
+
+    .btnDeletar {
+        width: 34px;
+        height: 34px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 500px) {
+    .tarefa {
+        flex-direction: column;
+        padding: 13px;
+        gap: 10px;
+    }
+
+    .conteudoTarefa {
+        width: 100%;
+    }
+
+    .textoTarefa,
+    .textoTarefaConcluido {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .localizacao {
+        font-size: 0.72rem;
+    }
+
+    .acoesTarefa {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .badge-prioridade {
+        margin-left: 0;
+        margin-right: auto;
+        padding: 5px 9px;
+        font-size: 10px;
+    }
+
+    .btnDeletar {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
+    }
+
+    .tarefa:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .tarefa {
+        padding: 11px;
+    }
+
+    .textoTarefa,
+    .textoTarefaConcluido {
+        font-size: 13px;
+    }
+
+    .badge-prioridade {
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+
+    .btnDeletar {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+}
