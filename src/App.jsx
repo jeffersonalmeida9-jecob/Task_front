@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import RotaPrivada from "./Fragmentos/RotaPrivada";
+import RotaPrivada from "./fragmentos/RotaPrivada";
 import TarefaV1 from "./Componentes/TarefaV1";
 import Login from "./Pages/Login";
-import Sobre from "./Pages/Sobre";
+import Sobre from "./Pages/sobre";
 import Sidebar from "./Pages/Sidebar";
 
 
