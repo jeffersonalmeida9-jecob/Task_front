@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "../css's/Kanban.module.css";
-import ModalTarefa from "../components/ModalTarefa";
+import ModalTarefa from "../Components/ModalTarefa";
 import "../css's/Kanban.css";
 
 function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa }) {
