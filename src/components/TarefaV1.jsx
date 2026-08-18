@@ -1,6 +1,6 @@
 import "../App.css";
-import Kanban from "../fragmentos/Kanban";
-import Header from "../fragmentos/Header";
+import Kanban from "../Fragmentos/Kanban";
+import Header from "../Fragmentos/Header";
 import { useState, useEffect } from "react";
 
 function TarefaV1() {
