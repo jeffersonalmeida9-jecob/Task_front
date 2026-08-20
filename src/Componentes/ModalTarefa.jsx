@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import styles from "../css's/ModalTarefa.module.css";
 import axios from 'axios';
 
-
-
 function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer' }) {
     
     const [texto, setTexto] = useState('');
@@ -22,7 +20,6 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer' 
             window.removeEventListener("keydown", handleKeyDown);
         };
     }, [onFechar]);
-
 
     useEffect(() => {
         if (tarefa) {

@@ -2,8 +2,10 @@ import { useState } from "react";
 import styles from "../css's/Kanban.module.css";
 import ModalTarefa from "../Componentes/ModalTarefa";
 import "../css's/Kanban.css";
+import axios from "axios";
+import {URL_API}  from "../fragmentos/API";
 
-function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa }) {
+function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
   const [modalAberto, setModalAberto] = useState(false);
   const [tarefaEditando, setTarefaEditando] = useState(null);
   const [colunaAtiva, setColunaAtiva] = useState("afazer");
@@ -33,14 +35,25 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa }) {
     setModalAberto(true);
   }
 
-  function salvarTarefa(dados) {
-    if (dados.id) {
-      setTarefas(tarefas.map((tarefa) => tarefa.id === dados.id? { ...tarefa, ...dados }: tarefa));
-    } else {
-      setTarefas([...tarefas, {...dados, id: Date.now(), coluna: dados.coluna || colunaAtiva}]);
+  async function salvarTarefa(dados) {
+    try {
+      if (dados.id !== undefined) {
+
+        const {data: novaTarefa} = await axios.post(URL_API + '/' + dados.id, {
+          texto:      dados.texto,
+          prioridade: dados.prioridade,
+          cidade:     dados.cidade,
+          coluna:     dados.coluna,
+        });
+        setTarefas(tarefasAtuais => [...tarefasAtuais, novaTarefa]);
+      } else {
+        const { data: novaTarefa } = await axios.post(URL_API, dados);
+        setTarefas(tarefasAtuais => [...tarefasAtuais, novaTarefa]);
+      }
+    } catch (e) {
+      setErro('Erro ao salvar tarefa. Tente novamente.');
+      console.error(e);
     }
-    setModalAberto(false);
-    setTarefaEditando(null);
   }
 
   return (
