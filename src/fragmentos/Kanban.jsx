@@ -39,15 +39,16 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
     try {
       if (dados.id !== undefined) {
 
-        const {data: novaTarefa} = await axios.post(URL_API + '/' + dados.id, {
+        const {data: tarefaEditada} = await axios.put(
+        URL_API + '/tarefas/' + dados.id, {
           texto:      dados.texto,
           prioridade: dados.prioridade,
           cidade:     dados.cidade,
           coluna:     dados.coluna,
         });
-        setTarefas(tarefasAtuais => [...tarefasAtuais, novaTarefa]);
-      } else {
-        const { data: novaTarefa } = await axios.post(URL_API, dados);
+        setTarefas(tarefasAtuais => tarefasAtuais.map (t => t.id === dados.id ? tarefaEditada : t));
+      } else { 
+        const { data: novaTarefa } = await axios.post(URL_API  + '/tarefas', dados);
         setTarefas(tarefasAtuais => [...tarefasAtuais, novaTarefa]);
       }
     } catch (e) {

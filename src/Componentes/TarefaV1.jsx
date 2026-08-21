@@ -11,18 +11,33 @@ function TarefaV1() {
   const [carregando, setCarregando] = useState (false)
   const [erro, setErro] = useState('');
 
-  function moverTarefa(id, novaColuna) {
-    setTarefas(
-      tarefas.map((tarefa) => tarefa.id === id? { ...tarefa, coluna: novaColuna }: tarefa)
-    );
-  };
+  async function moverTarefa(id, novaColuna) {
+    try {
+      const { data: tarefaMovida } = await axios.put (URL_API + '/tarefas/' + id, { coluna: novaColuna });
 
-  const deletarTarefa = (id) => {
-    const confirmado = window.confirm('Tem certeza que deseja deletar esta tarefa?');
-      if (confirmado) {
-        setTarefas(tarefas.filter((t) => t.id !== id));
-      }
-  };
+      setTarefas(tarefasAtuais => tarefasAtuais.map(t => t.id === id ? tarefaMovida : t));
+
+    } catch (e) {
+      setErro ('Erro ao mover tarefa. Tente novamente.');
+      console.error(e);
+    }
+  }
+    
+  async function deletarTarefa(id) {
+    const confirmado = window.confirm('Tem certeza que deseja deletar esta tarefa?')
+    if (!confirmado) return;
+
+    try {
+      await axios.delete(URL_API + '/tarefas/' + id);
+
+      setTarefas(tarefasAtuais => 
+        tarefasAtuais.filter(t => t.id !== id)
+      );
+    } catch (e) {
+      setErro ('Erro ao deletar tarefa. Tente Novamente.');
+      console.error(e);
+    }
+  }
 
   useEffect (() => {
     async function carregarTarefas() {
