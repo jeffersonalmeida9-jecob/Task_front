@@ -13,7 +13,7 @@ function Login() {
     const navigate = useNavigate();
 
     function handleLogin () {
-        if (usuario === 'admin' && senha === '1234') {
+        if (usuario === 'admin' && senha === '1234555') {
             login();
             navigate("/"); 
             return;
