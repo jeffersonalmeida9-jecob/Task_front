@@ -3,7 +3,7 @@ import styles from "../css's/Sidebar.module.css";
 import { useAuth } from '../contexts/AuthContext';
 
 function Sidebar() {
-    const { logado, logout } = useAuth();
+    const { token, logout } = useAuth();
     const linkClass = ({ isActive }) => isActive ? styles.link + ' ' + styles.ativo : styles.link;
 
     return (
@@ -12,7 +12,7 @@ function Sidebar() {
                 <h1>TaskFlow - Kanban</h1>
             </div>
             <nav className={styles.nav}>
-                {logado && (
+                {token && (
                     <>
                         <NavLink to='/' className={linkClass}>kanban</NavLink>
                         <NavLink to='/sobre' className={linkClass}>Sobre</NavLink>
@@ -20,7 +20,7 @@ function Sidebar() {
                     </>
                 )}
     
-                {!logado && 
+                {!token && 
                     <>
                         <NavLink to='/Login' className={linkClass}>Login</NavLink>
                         <NavLink to='/sobre' className={linkClass}>Sobre</NavLink>
