@@ -2,8 +2,8 @@ import { useState } from "react";
 import styles from "../css's/Kanban.module.css";
 import ModalTarefa from "../Componentes/ModalTarefa";
 import "../css's/Kanban.css";
-import axios from "axios";
-import {URL_API}  from "../fragmentos/API";
+import api from "../api";
+
 
 function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
   const [modalAberto, setModalAberto] = useState(false);
@@ -36,24 +36,29 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
   }
 
   async function salvarTarefa(dados) {
-    try {
-      if (dados.id !== undefined) {
+    if (dados.id !== undefined) {
+      console.log("criando")
+      try {
+        const resposta = await api.post('/tarefas', dados);
+        setTarefas([...tarefas, resposta.data]);
 
-        const {data: tarefaEditada} = await axios.put(
-        URL_API + '/tarefas/' + dados.id, {
-          texto:      dados.texto,
-          prioridade: dados.prioridade,
-          cidade:     dados.cidade,
-          coluna:     dados.coluna,
-        });
-        setTarefas(tarefasAtuais => tarefasAtuais.map (t => t.id === dados.id ? tarefaEditada : t));
-      } else { 
-        const { data: novaTarefa } = await axios.post(URL_API  + '/tarefas', dados);
-        setTarefas(tarefasAtuais => [...tarefasAtuais, novaTarefa]);
+      } catch (err) {
+        setErro('Erro ao criar tarefa. Tente novamente.');
+        console.log(err)
       }
-    } catch (e) {
-      setErro('Erro ao salvar tarefa. Tente novamente.');
-      console.error(e);
+
+    } else { 
+      
+      try {
+        const resposta = await api.put(`/tarefas/${dados.id}`, dados);
+        setTarefas(tarefas.map(t =>
+          t.id === dados.id ? resposta.data : t
+        ));
+      
+      } catch (err) {
+        setErro('Erro ao editar tarefa.');
+        console.log(err)
+      }
     }
   }
 

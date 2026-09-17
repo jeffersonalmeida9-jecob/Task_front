@@ -2,8 +2,7 @@ import "../App.css";
 import Kanban from "../fragmentos/Kanban";
 import Header from "../fragmentos/Header";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import {URL_API}  from "../fragmentos/API";
+import api from '../api';
 
 function TarefaV1() {
 
@@ -12,15 +11,9 @@ function TarefaV1() {
   const [erro, setErro] = useState('');
 
   async function moverTarefa(id, novaColuna) {
-    try {
-      const { data: tarefaMovida } = await axios.put (URL_API + '/tarefas/' + id, { coluna: novaColuna });
+      const resposta = await api.put (`/tarefas/${id}`, { coluna: novaColuna });
 
-      setTarefas(tarefasAtuais => tarefasAtuais.map(t => t.id === id ? tarefaMovida : t));
-
-    } catch (e) {
-      setErro ('Erro ao mover tarefa. Tente novamente.');
-      console.error(e);
-    }
+      setTarefas(tarefas.map(t => t.id === id ? resposta.data : t));
   }
     
   async function deletarTarefa(id) {
@@ -28,11 +21,9 @@ function TarefaV1() {
     if (!confirmado) return;
 
     try {
-      await axios.delete(URL_API + '/tarefas/' + id);
+      await api.delete(`/tarefas/${id}`);
 
-      setTarefas(tarefasAtuais => 
-        tarefasAtuais.filter(t => t.id !== id)
-      );
+      setTarefas(tarefas.filter(t => t.id !== id));
     } catch (e) {
       setErro ('Erro ao deletar tarefa. Tente Novamente.');
       console.error(e);
@@ -45,12 +36,13 @@ function TarefaV1() {
         setCarregando (true);
         setErro('');
 
-        const resposta = await axios.get(URL_API + '/tarefas')
+        const resposta = await api.get('/tarefas')
 
         setTarefas(resposta.data);
 
       } catch (e) {
-        console.error (e)
+        setErro('Erro ao carregar tarefas. Verifique a conexão.');
+        console.error(e);
       } finally {
         setCarregando(false);
       }

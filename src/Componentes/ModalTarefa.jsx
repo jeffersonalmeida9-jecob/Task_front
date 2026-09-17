@@ -57,6 +57,7 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer' 
             prioridade,
             coluna: tarefa?.coluna || coluna,
         });
+
         onFechar();
     }
 
