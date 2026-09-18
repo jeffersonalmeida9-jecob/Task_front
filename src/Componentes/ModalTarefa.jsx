@@ -43,7 +43,8 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer' 
         try {
             const { data } = await axios.get(`https://viacep.com.br/ws/${cepDigitado}/json/`);
             if (!data.erro) {setCidade(data.localidade); setEstado(data.uf);}
-        } catch {}
+        } catch {console.error();
+        }
     }
 
     function handleSalvar() {

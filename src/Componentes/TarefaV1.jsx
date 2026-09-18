@@ -10,10 +10,13 @@ function TarefaV1() {
   const [carregando, setCarregando] = useState (false)
   const [erro, setErro] = useState('');
 
-  async function moverTarefa(id, novaColuna) {
-      const resposta = await api.put (`/tarefas/${id}`, { coluna: novaColuna });
-
-      setTarefas(tarefas.map(t => t.id === id ? resposta.data : t));
+  async function moverTarefa(dadosTarefa) {
+    try {
+      const resposta = await api.put (`/tarefas/${dadosTarefa.id}`, dadosTarefa);
+       setTarefas(tarefas.map(t => t.id === dadosTarefa.id ? resposta.data : t));
+    } catch (error) {
+      console.log(error) 
+    }
   }
     
   async function deletarTarefa(id) {

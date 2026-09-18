@@ -36,8 +36,7 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
   }
 
   async function salvarTarefa(dados) {
-    if (dados.id !== undefined) {
-      console.log("criando")
+    if (dados.id === undefined) {
       try {
         const resposta = await api.post('/tarefas', dados);
         setTarefas([...tarefas, resposta.data]);
@@ -104,7 +103,8 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
               </div>
 
               <div className={styles.botoes}>
-                <button onClick={() =>   moverTarefa(tarefa.id, "andamento") }>Mover →</button>
+                <button onClick={() =>   {
+                  moverTarefa({...tarefa, coluna:"andamento"})} }>Mover →</button>
                 <button onClick={() => deletarTarefa(tarefa.id)}>X</button>
               </div>
             </div>
@@ -149,8 +149,8 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
               </div>
 
               <div className={styles.botoes}>
-                <button  onClick={() => moverTarefa(tarefa.id, "afazer")}>← Mover</button>
-                <button  onClick={() => moverTarefa(tarefa.id, "concluida")}>Mover →</button>
+                <button  onClick={() => moverTarefa({...tarefa, coluna:"afazer"})}>← Mover</button>
+                <button  onClick={() => moverTarefa({...tarefa, coluna:"concluida"})}>Mover →</button>
                 <button  onClick={() => deletarTarefa(tarefa.id)}>X</button>
               </div>
             </div>
@@ -194,7 +194,7 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
               </div>
 
               <div className={styles.botoes}>
-                <button  onClick={() => moverTarefa(tarefa.id, "andamento")}>← Mover</button>
+                <button  onClick={() => moverTarefa({...tarefa, coluna:"andamento"})}>← Mover</button>
                 <button  onClick={() => deletarTarefa(tarefa.id)}>X</button>
               </div>
             </div>
