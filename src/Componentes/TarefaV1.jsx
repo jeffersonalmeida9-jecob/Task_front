@@ -15,6 +15,7 @@ function TarefaV1() {
       const resposta = await api.put (`/tarefas/${dadosTarefa.id}`, dadosTarefa);
        setTarefas(tarefas.map(t => t.id === dadosTarefa.id ? resposta.data : t));
     } catch (error) {
+      window.alert('Limite de 2 tarefas em andamento por usuário atingido');
       console.log(error) 
     }
   }
