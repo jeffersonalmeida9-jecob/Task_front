@@ -42,7 +42,8 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
         setTarefas([...tarefas, resposta.data]);
 
       } catch (err) {
-        setErro('Erro ao criar tarefa. Tente novamente.');
+        //  setErro('Erro ao criar tarefa. Tente novamente.');
+        window.alert('Limite de 2 tarefas em andamento por usuário atingido');
         console.log(err)
       }
 

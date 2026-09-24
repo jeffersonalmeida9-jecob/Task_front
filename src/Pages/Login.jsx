@@ -8,7 +8,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [erro, setErro] = useState('');
-    const [shake, setShake] = useState(false)
+    const [shake, setShake] = useState(false);
 
     const {login} = useAuth();
     const navigate = useNavigate();
@@ -25,13 +25,12 @@ function Login() {
             navigate("/");
         }
         
-        catch (err) {
-            setErro(err.response?.data?.erro || 'Erro ao fazer login');
+        catch (erro) {
+            setErro(erro.response?.data?.erro || 'Erro ao fazer login');
             setShake (true)
             setTimeout (() => setShake(false), 500)
         } 
     }
-
 
     return (
         <div className='login-container'>
