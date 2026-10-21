@@ -22,11 +22,12 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer' 
     }, [onFechar]);
 
     useEffect(() => {
+        setErros([])
         if (tarefa) {
             setTexto(tarefa.texto);
-            setCidade(tarefa.cidade || '');
-            setEstado(tarefa.estado || '');
-            setCep(tarefa.cep || '');
+            // setCidade(tarefa.cidade || '');
+            // setEstado(tarefa.estado || '');
+            // setCep(tarefa.cep || '');
             setPrioridade(tarefa.prioridade);
         } else {
             setTexto('');
