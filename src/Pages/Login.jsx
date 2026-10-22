@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import "../css's/Login.css";
 import { useAuth } from '../contexts/AuthContext';
-import api, { mensagemDeErro } from "../api";
+import api, { mensagensDeErro } from "../api";
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -26,7 +26,7 @@ function Login() {
         }
         
         catch (erro) {
-            setErro (mensagemDeErro(erro).join(" "));
+            setErro (mensagensDeErro(erro).join(" "));
             setShake (true)
             setTimeout (() => setShake(false), 500)
         } 

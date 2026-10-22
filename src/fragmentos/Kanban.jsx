@@ -5,7 +5,7 @@ import "../css's/Kanban.css";
 import api from "../api";
 
 
-function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
+function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro, listaPrioridades, listaUsuarios, listaProjetos}) {
   const [modalAberto, setModalAberto] = useState(false);
   const [tarefaEditando, setTarefaEditando] = useState(null);
   const [colunaAtiva, setColunaAtiva] = useState("afazer");
@@ -82,11 +82,13 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
           className={styles.filtro}
         >
           <option value="todas">Todas</option>
-          <option value="alta">Alta</option>
-          <option value="media">Média</option>
-          <option value="baixa">Baixa</option>
+           {listaPrioridades.map((prioridade) => (
+              <option key={prioridade.id} value={prioridade.nome}>
+                {prioridade.nome}
+              </option>
+            ))}
         </select>
-
+        prioridades={listaPrioridades}
         {filtrarTarefas("afazer", filtroAfazer).map((tarefa) => (
           <div className={`${styles.card} ${styles[`card-${tarefa.prioridade || "media"}`]}`} key={tarefa.id}>                
               <div className={styles.conteudo} onDoubleClick={() => abrirModalEditar(tarefa)}>
@@ -97,14 +99,10 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
                   {tarefa.prioridade === "media" && " Média"}
                   {tarefa.prioridade === "baixa" && " Baixa"}
                 </span>
-
-                <span className={styles.localizacao}>
-                  📍 {tarefa.cidade} - {tarefa.estado}
-                </span>
               </div>
 
               <div className={styles.botoes}>
-                <button onClick={() =>   {
+                <button onClick={() => {
                   moverTarefa({...tarefa, coluna:"andamento"})} }>Mover →</button>
                 <button onClick={() => deletarTarefa(tarefa.id)}>X</button>
               </div>
@@ -125,9 +123,11 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
           className={styles.filtro}
         >
           <option value="todas">Todas</option>
-          <option value="alta">Alta</option>
-          <option value="media">Média</option>
-          <option value="baixa">Baixa</option>
+           {listaPrioridades.map((prioridade) => (
+              <option key={prioridade.id} value={prioridade.nome}>
+                {prioridade.nome}
+              </option>
+            ))}
         </select>
 
         {filtrarTarefas("andamento", filtroAndamento).map((tarefa) => (
@@ -171,9 +171,11 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
           className={styles.filtro}
         >
           <option value="todas">Todas</option>
-          <option value="alta">Alta</option>
-          <option value="media">Média</option>
-          <option value="baixa">Baixa</option>
+           {listaPrioridades.map((prioridade) => (
+              <option key={prioridade.id} value={prioridade.nome}>
+                {prioridade.nome}
+              </option>
+            ))}
         </select>
 
         {filtrarTarefas("concluida", filtroConcluida).map((tarefa) => (
@@ -208,10 +210,10 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro}) {
           tarefa={tarefaEditando}
           coluna={colunaAtiva}
           onSalvar={salvarTarefa}
-          onFechar={() => {
-            setModalAberto(false);
-            setTarefaEditando(null);
-          }}
+          onFechar={() => { setModalAberto(false); setTarefaEditando(null); }}
+          prioridade={listaPrioridades}
+          usuarios={listaUsuarios}
+          projetos={listaProjetos}
         />
       )}
     </div>

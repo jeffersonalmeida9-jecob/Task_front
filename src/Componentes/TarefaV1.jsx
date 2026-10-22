@@ -9,6 +9,10 @@ function TarefaV1() {
   const [tarefas, setTarefas] = useState ([])
   const [carregando, setCarregando] = useState (false)
   const [erro, setErro] = useState('');
+  const [listaPrioridades, setListaPrioridades] = useState([])
+  const [listaUsuarios, setListaUsuarios] = useState([])
+  const [listaProjetos, setListaProjetos] = useState([])
+
 
   async function moverTarefa(dadosTarefa) {
     try {
@@ -37,6 +41,18 @@ function TarefaV1() {
   useEffect (() => {
     async function carregarTarefas() {
       try {
+        const [respPrioridades, respTarefas, respUsuarios, respProjetos] =
+          await Promise.all ([
+            api.get("/prioridades"),
+            api.get("/tarefas"),
+            api.get("/usuarios"),
+            api.get("/projetos"),
+          ]);
+        setListaPrioridades(respPrioridades.data)
+        setTarefas(respTarefas.data)
+        setListaUsuarios(respUsuarios.data)
+        setListaProjetos(respProjetos.data)
+
         setCarregando (true);
         setErro('');
 
@@ -81,6 +97,9 @@ function TarefaV1() {
             moverTarefa={moverTarefa}
             deletarTarefa={deletarTarefa}
             setErro={setErro}
+            listaPrioridades={listaPrioridades}
+            listaUsuarios={listaUsuarios}
+            listaProjetos={listaProjetos}
           />
         </div>
         )}
