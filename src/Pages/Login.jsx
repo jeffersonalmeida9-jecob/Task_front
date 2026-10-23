@@ -26,6 +26,7 @@ function Login() {
         }
         
         catch (erro) {
+            console.error("Resposta de erro do servidor:", erro.response?.data);
             setErro (mensagensDeErro(erro).join(" "));
             setShake (true)
             setTimeout (() => setShake(false), 500)
@@ -57,8 +58,6 @@ function Login() {
                 <p className='login-erro'>{erro}</p>}
                 <button className='login-btn' onClick={handleLogin}>Entrar</button>
                 <p className='login-aviso'>
-                    Este login é apenas para fins didáticos.
-                    Credenciais reais vêm no módulo back-end.
                 </p>
             </div>
         </div>
