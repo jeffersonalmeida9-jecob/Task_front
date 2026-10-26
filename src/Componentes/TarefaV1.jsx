@@ -2,7 +2,7 @@ import "../App.css";
 import Kanban from "../fragmentos/Kanban";
 import Header from "../fragmentos/Header";
 import { useState, useEffect } from "react";
-import api from '../api';
+import api, {mensagensDeErro} from '../api';
 
 function TarefaV1() {
 
@@ -19,8 +19,8 @@ function TarefaV1() {
       const resposta = await api.put (`/tarefas/${dadosTarefa.id}`, dadosTarefa);
        setTarefas(tarefas.map(t => t.id === dadosTarefa.id ? resposta.data : t));
     } catch (error) {
-      window.alert('Limite de 2 tarefas em andamento por usuário atingido');
-      console.log(error) 
+      console.log(error)
+      alert(mensagensDeErro(error).join("\n")); 
     }
   }
     
@@ -32,9 +32,10 @@ function TarefaV1() {
       await api.delete(`/tarefas/${id}`);
 
       setTarefas(tarefas.filter(t => t.id !== id));
-    } catch (e) {
+    } catch (error) {
       setErro ('Erro ao deletar tarefa. Tente Novamente.');
-      console.error(e);
+      console.error(error);
+      alert(mensagensDeErro(error).join("\n"));
     }
   }
 

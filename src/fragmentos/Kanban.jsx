@@ -51,9 +51,7 @@ function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro, list
       
       try {
         const resposta = await api.put(`/tarefas/${dados.id}`, dados);
-        setTarefas(tarefas.map(t =>
-          t.id === dados.id ? resposta.data : t
-        ));
+        setTarefas(tarefas.map((t) => t.id === dados.id ? resposta.data : t));
       
       } catch (err) {
         setErro('Erro ao editar tarefa.');

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import styles from "../css's/ModalTarefa.module.css";
 import axios from 'axios';
+import { mensagensDeErro } from '../api';
+import { useAuth } from "../contexts/AuthContext"
+
 
 function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer' }) {
     
@@ -9,6 +12,7 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer' 
     const [cidade, setCidade] = useState('');
     const [prioridade,setPrioridade]= useState('media');
     const [estado, setEstado] = useState('');
+
 
    useEffect(() => {
         function handleKeyDown(e) {
@@ -77,13 +81,12 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer' 
                     value={cep}
                     onChange={e => { setCep(e.target.value); consultarCidade(e.target.value); }} 
                 />
-                {cidade && 
-                    <p className={styles.cidade}>{cidade} {estado && ` / ${estado}`}</p>}
                     <select value={prioridade} onChange={e => setPrioridade(e.target.value)}>
                         <option value='alta'>Alta</option>
                         <option value='media'>Média</option>
                         <option value='baixa'>Baixa</option>
                     </select>
+                    <select value id=""></select>
                 <div className={styles.botoes}>
                     <button onClick={onFechar}>Cancelar</button>
                     <button onClick={handleSalvar}>Salvar</button>
