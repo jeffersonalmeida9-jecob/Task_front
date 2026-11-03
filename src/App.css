@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -17,13 +18,13 @@ body {
 }
 
 .containerPrincipal {
-  width: 1200px;
-  max-width: 92%;
-  margin: 50px auto;
-  background: white;
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 12px 35px rgba(0,0,0,.08);
+    width: 1200px;
+    max-width: 92%;
+    margin: 50px auto;
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
 }
 
 #formulario {
@@ -50,7 +51,7 @@ body {
     outline: none;
     border-color: #10B981;
     background: white;
-    box-shadow: 0 0 0 3px rgba(16,185,129,.15);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, .15);
 }
 
 .campo-linha input::placeholder {
@@ -102,17 +103,22 @@ footer {
     font-size: 14px;
 }
 
-.app-leyout {
+/* Layout principal */
+
+.app-layout {
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
 .app-conteudo {
     margin-left: 220px;
     flex: 1;
     min-width: 0;
+    width: calc(100% - 220px);
 }
 
+/* Responsividade */
 
 @media (max-width: 900px) {
     .containerPrincipal {
@@ -140,11 +146,12 @@ footer {
 
     .app-conteudo {
         margin-left: 180px;
+        width: calc(100% - 180px);
     }
 }
 
 @media (max-width: 600px) {
-    .app-leyout {
+    .app-layout {
         flex-direction: column;
     }
 

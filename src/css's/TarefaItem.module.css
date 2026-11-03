@@ -1,3 +1,27 @@
+.info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 3px;
+    width: 100%;
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    color: #9CA3AF;
+}
+
+.infoRotulo {
+    font-size: 9px;
+    font-weight: 600;
+    color: #9CA3AF;
+    text-transform: uppercase;
+}
+
 .tarefa {
     display: flex;
     align-items: flex-start;
@@ -7,15 +31,39 @@
     background-color: #e8faf2;
     border-left: 5px solid #10b981;
     border-radius: 12px;
+    transition: .2s;
 }
 
 .conteudoTarefa {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; 
+    align-items: flex-start;
     gap: 5px;
     flex: 1;
     min-width: 0;
+    width: 100%;
+}
+
+.info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.infoRotulo {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #6B7280;
+    text-transform: uppercase;
 }
 
 .localizacao {
@@ -46,7 +94,7 @@
 }
 
 .textoTarefa,
-.textoTarefaConcluido {
+.texto-tarefa {
     font-size: 16px;
     font-weight: 600;
     color: #1F2937;
@@ -54,7 +102,7 @@
     word-break: break-word;
 }
 
-.textoTarefaConcluido {
+.texto-tarefa {
     color: #6B7280;
     text-decoration: line-through;
 }
@@ -62,14 +110,10 @@
 .badge-prioridade {
     margin-left: auto;
     margin-right: 14px;
-
     padding: 6px 12px;
-
     border-radius: 999px;
-
     font-size: 12px;
     font-weight: 700;
-
     text-transform: uppercase;
     letter-spacing: .5px;
 }
@@ -89,19 +133,33 @@
     color: white;
 }
 
+.btnMover {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: #10B981;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btnMover:hover {
+    background: #10B981;
+    color: white;
+}
+
 .btnDeletar {
     width: 36px;
     height: 36px;
-
     border: none;
     border-radius: 10px;
-
     background: #FFFFFF;
     color: #EF4444;
-
     font-size: 18px;
     font-weight: bold;
-
     cursor: pointer;
     transition: .2s;
 }
@@ -124,11 +182,12 @@
     }
 
     .textoTarefa,
-    .textoTarefaConcluido {
+    .texto-tarefa {
         font-size: 15px;
     }
 
-    .localizacao {
+    .localizacao,
+    .info {
         font-size: 0.75rem;
     }
 
@@ -161,12 +220,13 @@
     }
 
     .textoTarefa,
-    .textoTarefaConcluido {
+    .texto-tarefa {
         font-size: 14px;
         line-height: 1.4;
     }
 
-    .localizacao {
+    .localizacao,
+    .info {
         font-size: 0.72rem;
     }
 
@@ -189,6 +249,11 @@
         font-size: 15px;
     }
 
+    .btnMover {
+        width: 30px;
+        height: 30px;
+    }
+
     .tarefa:hover {
         transform: none;
         box-shadow: none;
@@ -201,7 +266,7 @@
     }
 
     .textoTarefa,
-    .textoTarefaConcluido {
+    .texto-tarefa {
         font-size: 13px;
     }
 

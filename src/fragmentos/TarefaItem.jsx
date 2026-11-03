@@ -1,29 +1,58 @@
 import styles from "../css's/TarefaItem.module.css";
 
-function TarefaItem({ texto, cidade, estado, concluida = false, prioridade = 'media', onDeletar, onConcluir }) {
-
-    // Classe do li muda conforme o estado concluida
+function TarefaItem({ texto, concluida = false, prioridade = "", onDeletar, onEditar, onMover, colunaProxima = null, colunaAnterior = null, usuario = null, projeto = null }) {
 
     const classeItem = concluida ? styles.tarefa + ' ' + styles.concluida : styles.tarefa;
-    // Classe do texto tambem muda
 
-    const classeTexto = concluida ? styles.textoTarefaConcluido : styles.textoTarefa;
+    const classeTexto = concluida ? styles.textoTarefa + " " + styles["texto-tarefa"] : styles.textoTarefa;
 
-    const classePrioridade = prioridade === styles['badge-prioridade'] + ' ' + styles['badge-' + prioridade];
+    const classePrioridade = styles['badge-prioridade'] + ' ' + styles['badge-' + prioridade];
+
+    const modoKanban = onMover !== null;
 
     return (
-        <li className={classeItem} onClick={onConcluir}>
-            <div>
-                <span className={classeTexto}>{texto}</span>
-                {cidade && estado && (
-                    <small className={styles.localizacao}>
-                        {cidade} - {estado}
-                    </small>
+        <li className={classeItem}>
+
+            <div className={styles.conteudoTarefa}>
+                <div>
+                    <span className={classeTexto} onDoubleClick={onEditar}>
+                        {texto}
+                    </span>
+                </div>
+
+                {(usuario || projeto) && (
+                    <div className={styles.info}>
+                        {usuario && (
+                            <span className={styles.infoItem}>
+                                <span className={styles.infoRotulo}>Responsável</span>
+                                {usuario}
+                            </span>
+                        )}
+                        {projeto && (
+                            <span className={styles.infoItem}>
+                                <span className={styles.infoRotulo}>Projeto</span>
+                                {projeto}
+                            </span>
+                        )}
+                    </div>
                 )}
             </div>
+
             <div className={styles.acoesTarefa}>
                 <span className={classePrioridade}>{prioridade}</span>
-                <button className={styles.btnDeletar} onClick={e => {e.stopPropagation(); onDeletar();}}>X</button>
+                {modoKanban && colunaAnterior && (
+                    <button className={styles.btnMover} onClick={() => onMover(colunaAnterior)} title="Mover para coluna anterior" >
+                        ←
+                    </button>
+                )}
+                {modoKanban && colunaProxima && (
+                    <button className={styles.btnMover} onClick={() => onMover(colunaProxima)} title="Mover para próxima coluna">
+                        →
+                    </button>
+                )}
+                <button className={styles.btnDeletar} onClick={e => {e.stopPropagation(); onDeletar();}}>
+                    X
+                </button>
             </div>
         </li>
     );

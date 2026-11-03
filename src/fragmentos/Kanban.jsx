@@ -1,221 +1,202 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import ListarTarefas from "../fragmentos/ListaTarefas";
+import Header from "../fragmentos/Header";
 import styles from "../css's/Kanban.module.css";
 import ModalTarefa from "../Componentes/ModalTarefa";
 import "../css's/Kanban.css";
-import api from "../api";
+import api, { mensagensDeErro } from "../api";
 
 
-function Kanban({ tarefas, setTarefas, moverTarefa, deletarTarefa, setErro, listaPrioridades, listaUsuarios, listaProjetos}) {
+function Kanban() {
+  const [tarefas, setTarefas] = useState([]);
+  const [listaPrioridades, setListaPrioridades] = useState([]);
+  const [listaUsuarios, setListaUsuarios] = useState([]);
+  const [listaProjetos, setListaProjetos] = useState([]);
+  const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
   const [tarefaEditando, setTarefaEditando] = useState(null);
   const [colunaAtiva, setColunaAtiva] = useState("afazer");
-  const [filtroAfazer, setFiltroAfazer] = useState("todas");
-  const [filtroAndamento, setFiltroAndamento] = useState("todas");
-  const [filtroConcluida, setFiltroConcluida] = useState("todas");
 
-  function filtrarTarefas(coluna, filtro) {
-    return tarefas.filter((tarefa) => {
-      if (tarefa.coluna !== coluna) return false;
+  useEffect (() => {
+    async function carregarTarefas() {
+      setCarregando(true);
+      setErro("");
 
-      if (filtro === "todas") return true;
+      try {
+        const [respPrioridades, respTarefas, respUsuarios, respProjetos] =
+          await Promise.all ([
+            api.get("/prioridades"),
+            api.get("/tarefas"),
+            api.get("/usuarios"),
+            api.get("/projetos"),
+          ]);
+        setListaPrioridades(respPrioridades.data)
+        setTarefas(respTarefas.data)
+        setListaUsuarios(respUsuarios.data)
+        setListaProjetos(respProjetos.data)
 
-      return tarefa.prioridade === filtro;
-    });
-  }
+        setCarregando (true);
+        setErro('');
 
-  function abrirModalCriar(coluna) {
-    setTarefaEditando(null);
+      } catch (e) {
+        setErro('Erro ao carregar tarefas. Verifique a conexão.');
+        console.error(e);
+      } finally {
+        setCarregando(false);
+      }
+    }
+    carregarTarefas();
+  }, [])
+
+   function abrirModalCriar(coluna) {
+    setTarefaEditando(null); 
     setColunaAtiva(coluna);
     setModalAberto(true);
   }
 
   function abrirModalEditar(tarefa) {
-    setTarefaEditando(tarefa);
-    setColunaAtiva(tarefa.coluna);
+    setTarefaEditando(tarefa); 
     setModalAberto(true);
   }
 
   async function salvarTarefa(dados) {
-    if (dados.id === undefined) {
-      try {
-        const resposta = await api.post('/tarefas', dados);
-        setTarefas([...tarefas, resposta.data]);
-
-      } catch (err) {
-        //  setErro('Erro ao criar tarefa. Tente novamente.');
-        window.alert('Limite de 2 tarefas em andamento por usuário atingido');
-        console.log(err)
-      }
-
-    } else { 
-      
-      try {
-        const resposta = await api.put(`/tarefas/${dados.id}`, dados);
-        setTarefas(tarefas.map((t) => t.id === dados.id ? resposta.data : t));
-      
-      } catch (err) {
-        setErro('Erro ao editar tarefa.');
-        console.log(err)
-      }
+    if (dados.id) {
+      const resposta = await api.put(`/tarefas/${dados.id}`, dados);
+      setTarefas(tarefas.map((t) => (t.id === dados.id ? resposta.data : t)));
+    } 
+    else {
+      const resposta = await api.post("/tarefas", dados);
+      setTarefas([...tarefas, resposta.data]);
     }
   }
 
-  return (
-    <div className={styles.colunas}>
+  async function deletarTarefa(id) {
+    const confirmado = window.confirm('Tem certeza que deseja deletar esta tarefa?')
+    if (!confirmado) return;
+    try {
+        await api.delete(`/tarefas/${id}`);
+        setTarefas(tarefas.filter(t => t.id !== id));
+    } catch (error) {
+        alert(mensagensDeErro(error).join("\n"));
+    }
+  }
 
-      {/* A FAZER */}
-      <div className={styles.coluna}>
-        <div className="kanban-coluna-header">
-          <h2>A Fazer</h2>
-          <div style={{ display: "flex", gap: "8px", alignItems: "center",}}>
-            <span className="kanban-contador">
-              {tarefas.filter((tarefa) => tarefa.coluna === "afazer").length}
-            </span>
-            <button className="kanban-btn-add" onClick={() => abrirModalCriar("afazer")}>+</button>
-          </div>
-        </div>
-        <select
-          value={filtroAfazer}
-          onChange={(e) => setFiltroAfazer(e.target.value)}
-          className={styles.filtro}
-        >
-          <option value="todas">Todas</option>
-           {listaPrioridades.map((prioridade) => (
-              <option key={prioridade.id} value={prioridade.nome}>
-                {prioridade.nome}
-              </option>
-            ))}
-        </select>
-        prioridades={listaPrioridades}
-        {filtrarTarefas("afazer", filtroAfazer).map((tarefa) => (
-          <div className={`${styles.card} ${styles[`card-${tarefa.prioridade || "media"}`]}`} key={tarefa.id}>                
-              <div className={styles.conteudo} onDoubleClick={() => abrirModalEditar(tarefa)}>
-                <p>{tarefa.texto}</p>
+  async function moverTarefa(id, novaColuna) {
+    const tarefa = tarefas.find((t) => t.id === id);
+    try {
+      const resposta = await api.put (`/tarefas/${id}`, { ...tarefa, coluna: novaColuna });
+      setTarefas(tarefas.map((t) => (t.id === id ? resposta.data : t)));
+    } catch (error) {
+      console.log(error)
+      alert(mensagensDeErro(error).join("\n")); 
+    }
+  }
 
-                <span className={`${styles.prioridade} ${styles[tarefa.prioridade]}`}>
-                  {tarefa.prioridade === "alta" && " Alta"}
-                  {tarefa.prioridade === "media" && " Média"}
-                  {tarefa.prioridade === "baixa" && " Baixa"}
-                </span>
-              </div>
-
-              <div className={styles.botoes}>
-                <button onClick={() => {
-                  moverTarefa({...tarefa, coluna:"andamento"})} }>Mover →</button>
-                <button onClick={() => deletarTarefa(tarefa.id)}>X</button>
-              </div>
-            </div>
-          ))}
-      </div>
-
-      {/* EM ANDAMENTO */}
-      <div className={styles.coluna}>
-        <div className="kanban-coluna-header">
-          <h2>Em Andamento</h2>
-          <button className="kanban-btn-add"  onClick={() => abrirModalCriar("andamento")}>+</button>
-        </div>
-
-        <select
-          value={filtroAndamento}
-          onChange={(e) => setFiltroAndamento(e.target.value)}
-          className={styles.filtro}
-        >
-          <option value="todas">Todas</option>
-           {listaPrioridades.map((prioridade) => (
-              <option key={prioridade.id} value={prioridade.nome}>
-                {prioridade.nome}
-              </option>
-            ))}
-        </select>
-
-        {filtrarTarefas("andamento", filtroAndamento).map((tarefa) => (
-          <div className={`${styles.card} ${styles[`card-${tarefa.prioridade || "media"}`]}`} key={tarefa.id}>                
-              <div
-                className={styles.conteudo}
-                onDoubleClick={() => abrirModalEditar(tarefa)}
-              >
-                <p>{tarefa.texto}</p>
-
-                <span className={`${styles.prioridade} ${styles[tarefa.prioridade]}`}>
-                  {tarefa.prioridade === "alta" && " Alta"}
-                  {tarefa.prioridade === "media" && " Média"}
-                  {tarefa.prioridade === "baixa" && " Baixa"}
-                </span>
-
-                <span className={styles.localizacao}>
-                  📍 {tarefa.cidade} - {tarefa.estado}
-                </span>
-              </div>
-
-              <div className={styles.botoes}>
-                <button  onClick={() => moverTarefa({...tarefa, coluna:"afazer"})}>← Mover</button>
-                <button  onClick={() => moverTarefa({...tarefa, coluna:"concluida"})}>Mover →</button>
-                <button  onClick={() => deletarTarefa(tarefa.id)}>X</button>
-              </div>
-            </div>
-          ))}
-      </div>
-
-      {/* CONCLUÍDO */}
-      <div className={styles.coluna}>
-        <div className="kanban-coluna-header">
-          <h2>Concluído</h2>
-          <button className="kanban-btn-add" onClick={() => abrirModalCriar("concluida")}>+</button>
-        </div>
-
-        <select
-          value={filtroConcluida}
-          onChange={(e) => setFiltroConcluida(e.target.value)}
-          className={styles.filtro}
-        >
-          <option value="todas">Todas</option>
-           {listaPrioridades.map((prioridade) => (
-              <option key={prioridade.id} value={prioridade.nome}>
-                {prioridade.nome}
-              </option>
-            ))}
-        </select>
-
-        {filtrarTarefas("concluida", filtroConcluida).map((tarefa) => (
-          <div className={`${styles.card} ${styles[`card-${tarefa.prioridade || "media"}`]}`} key={tarefa.id}>                
-            <div className={styles.conteudo}
-                onDoubleClick={() => abrirModalEditar(tarefa)}
-              >
-                <p>{tarefa.texto}</p>
-
-                <span className={`${styles.prioridade} ${styles[tarefa.prioridade]}`}>
-                  {tarefa.prioridade === "alta" && " Alta"}
-                  {tarefa.prioridade === "media" && " Média"}
-                  {tarefa.prioridade === "baixa" && " Baixa"}
-                </span>
-
-                <span className={styles.localizacao}>
-                  📍 {tarefa.cidade} - {tarefa.estado}
-                </span>
-              </div>
-
-              <div className={styles.botoes}>
-                <button  onClick={() => moverTarefa({...tarefa, coluna:"andamento"})}>← Mover</button>
-                <button  onClick={() => deletarTarefa(tarefa.id)}>X</button>
-              </div>
-            </div>
-          ))}
-      </div>
-
-      {/* MODAL */}
-      {modalAberto && (
-        <ModalTarefa
-          tarefa={tarefaEditando}
-          coluna={colunaAtiva}
-          onSalvar={salvarTarefa}
-          onFechar={() => { setModalAberto(false); setTarefaEditando(null); }}
-          prioridade={listaPrioridades}
-          usuarios={listaUsuarios}
-          projetos={listaProjetos}
-        />
+    return (
+  <div id="App">
+    <Header 
+      titulo="TaskFlow - Mini Kanban" 
+      subtitulo="Organize suas tarefas"
+      afazer={tarefas.filter((tarefa) => tarefa.coluna === "afazer").length}
+      andamento={tarefas.filter((tarefa) => tarefa.coluna === "andamento").length}
+      concluidas={tarefas.filter((tarefa) => tarefa.coluna === "concluido").length} 
+    />
+    
+    <main className="container">
+      {carregando && (
+        <p style={{ textAlign: 'center', color: '#94A3B8' }}>Carregando tarefas...</p>
       )}
-    </div>
-  );
-}
+      
+      {erro && (
+        <p style={{ textAlign: 'center', color: '#EF4444' }}>{erro}</p>
+      )}
 
+      {!carregando && !erro && (
+        <>
+          <div className={styles.colunas}>
+            {/* A FAZER */}
+            <div className={styles.coluna}>
+              <div className="kanban-coluna-header">
+                <h2>A Fazer</h2>
+                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                  <span className="kanban-contador">
+                    {tarefas.filter((tarefa) => tarefa.coluna === "afazer").length}
+                  </span>
+                  <button className="kanban-btn-add" onClick={() => abrirModalCriar("afazer")}>+</button>
+                </div>
+              </div>
+              <ListarTarefas 
+                tarefas={tarefas.filter((t) => t.coluna === "afazer")} 
+                onDeletar={deletarTarefa} 
+                onEditar={abrirModalEditar} 
+                onMover={moverTarefa} 
+                colunaAnterior={null} 
+                colunaProxima="andamento" 
+              />
+            </div>
+
+            {/* EM ANDAMENTO */}
+            <div className={styles.coluna}>
+              <div className="kanban-coluna-header">
+                <h2>Em Andamento</h2>
+                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                  <span className="kanban-contador">
+                    {tarefas.filter((tarefa) => tarefa.coluna === "andamento").length}
+                  </span>
+                  <button className="kanban-btn-add" onClick={() => abrirModalCriar("andamento")}>+</button>
+                </div>
+              </div>
+              <ListarTarefas 
+                tarefas={tarefas.filter((t) => t.coluna === "andamento")} 
+                onDeletar={deletarTarefa} 
+                onEditar={abrirModalEditar} 
+                onMover={moverTarefa} 
+                colunaAnterior="afazer" 
+                colunaProxima="concluido" 
+              />
+            </div>
+
+            {/* CONCLUÍDO */}
+            <div className={styles.coluna}>
+              <div className="kanban-coluna-header">
+                <h2>Concluído</h2>
+                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                  <span className="kanban-contador">
+                    {tarefas.filter((tarefa) => tarefa.coluna === "concluido").length}
+                  </span>
+                  <button className="kanban-btn-add" onClick={() => abrirModalCriar("concluido")}>+</button>
+                </div>
+              </div>
+              <ListarTarefas 
+                tarefas={tarefas.filter((t) => t.coluna === "concluido")} 
+                onDeletar={deletarTarefa} 
+                onEditar={abrirModalEditar} 
+                onMover={moverTarefa} 
+                colunaAnterior="andamento" 
+                colunaProxima={null} 
+              />
+            </div>
+          </div>
+
+          <ModalTarefa 
+            aberto={modalAberto} 
+            onFechar={() => setModalAberto(false)} 
+            onSalvar={salvarTarefa} 
+            tarefa={tarefaEditando} 
+            coluna={colunaAtiva} 
+            prioridades={listaPrioridades} 
+            usuarios={listaUsuarios} 
+            projetos={listaProjetos} 
+          />
+        </>
+      )}
+    </main>
+
+    <footer>
+      <p>Jefferson Kauã - 2024</p>
+    </footer>
+  </div>
+);
+}
 export default Kanban;

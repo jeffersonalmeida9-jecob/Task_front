@@ -1,7 +1,7 @@
 import TarefaItem from './TarefaItem';
 
 
-function ListaTarefas({ tarefas, onDeletar, onConcluir }) {
+function ListaTarefas({ tarefas, onDeletar, onEditar }) {
 
     return (
         <section id='lista-section'>
@@ -16,12 +16,12 @@ function ListaTarefas({ tarefas, onDeletar, onConcluir }) {
                         <TarefaItem
                             key={tarefa.id}
                             texto={tarefa.texto}
-                            cidade={tarefa.cidade}
-                            estado={tarefa.estado}
                             concluida={tarefa.concluida}
                             prioridade={tarefa.prioridade}
+                            projeto={tarefa.projeto || 'Sem projeto'}
+                            usuario={tarefa.usuario || 'Sem responsável'}
+                            onEditar={onEditar ? () => onEditar(tarefa) : null}
                             onDeletar={() => onDeletar(tarefa.id)}
-                            onConcluir={() => onConcluir(tarefa.id)}
                         />
                     ))}
                 </ul>
