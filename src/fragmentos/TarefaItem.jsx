@@ -11,32 +11,31 @@ function TarefaItem({ texto, concluida = false, prioridade = "", onDeletar, onEd
     const modoKanban = onMover !== null;
 
     return (
-        <li className={classeItem}>
-
+        <li className={classeItem} onDoubleClick={onEditar}>
             <div className={styles.conteudoTarefa}>
                 <div>
-                    <span className={classeTexto} onDoubleClick={onEditar}>
+                    <span className={classeTexto}>
                         {texto}
                     </span>
                 </div>
 
-                {(usuario || projeto) && (
-                    <div className={styles.info}>
-                        {usuario && (
-                            <span className={styles.infoItem}>
-                                <span className={styles.infoRotulo}>Responsável</span>
-                                {usuario}
-                            </span>
-                        )}
-                        {projeto && (
-                            <span className={styles.infoItem}>
-                                <span className={styles.infoRotulo}>Projeto</span>
-                                {projeto}
-                            </span>
-                        )}
+                    {(usuario || projeto) && (
+                        <div className={styles.info}>
+                            {usuario && (
+                                <span className={styles.infoItem}>
+                                    <span className={styles.infoRotulo}>Responsável</span>
+                                    {usuario}
+                                </span>
+                            )}
+                            {projeto && (
+                                <span className={styles.infoItem}>
+                                    <span className={styles.infoRotulo}>Projeto</span>
+                                    {projeto}
+                                </span>
+                            )}
+                        </div>
+                    )}
                     </div>
-                )}
-            </div>
 
             <div className={styles.acoesTarefa}>
                 <span className={classePrioridade}>{prioridade}</span>

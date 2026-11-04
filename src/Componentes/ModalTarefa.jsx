@@ -48,14 +48,15 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer',
     async function handleSalvar() {
         setErros([]);
         setSalvando(true);
-        try { await onSalvar({ ...tarefa, 
-                                id: tarefa?.id, 
-                                texto, 
-                                coluna: tarefa?.coluna || coluna,
-                                idPrioridade: paraNumero(idPrioridade),
-                                idUsuario: paraNumero(idUsuario),
-                                idProjeto: paraNumero(idProjeto)
-                            });
+        try { await onSalvar({ 
+            ...tarefa, 
+            id: tarefa?.id, 
+            texto, 
+            coluna: tarefa?.coluna || coluna,
+            idPrioridade: paraNumero(idPrioridade),
+            idUsuario: paraNumero(idUsuario),
+            idProjeto: paraNumero(idProjeto)
+         });
         onFechar();
         }
         catch (erro) {
@@ -77,14 +78,13 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer',
                     onChange={e => setTexto(e.target.value)} 
                 />
 
-                    {/*select de prioridade*/}
-                    <select value={idPrioridade} onChange={(e) => setIdPrioridade(e.target.value)}>
-                        {prioridades.map((p) => (
-                            <option key={p.id} value={p.id}>
-                                {p.nome}
-                            </option>
-                        ))}
+                    {/* Select de Prioridade */}
+                    <select value={idPrioridade} onChange={e => setIdPrioridade(e.target.value)}>
+                      {prioridades.map(p => (
+                        <option key={p.id} value={p.id}>{p.nome}</option>
+                      ))}
                     </select>
+
 
                     {/*select de projeto*/}
                      <select value={idProjeto} onChange={(e) => setIdProjeto(e.target.value)}>
