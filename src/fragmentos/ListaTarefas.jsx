@@ -17,7 +17,7 @@ function ListaTarefas({ tarefas, onDeletar, onEditar }) {
                             key={tarefa.id}
                             texto={tarefa.texto}
                             concluida={tarefa.concluida}
-                            prioridade={tarefa.prioridade}
+                            prioridade={tarefa.prioridade?.descricao ?? tarefa.prioridade}
                             projeto={tarefa.projeto || 'Sem projeto'}
                             usuario={tarefa.usuario || 'Sem responsável'}
                             onEditar={onEditar ? () => onEditar(tarefa) : null}

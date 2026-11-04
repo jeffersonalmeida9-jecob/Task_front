@@ -103,19 +103,20 @@ footer {
     font-size: 14px;
 }
 
-/* Layout principal */
+:root {
+    --sidebar-w: 220px;
+}
 
 .app-layout {
     display: flex;
     min-height: 100vh;
     width: 100%;
+    padding-left: 220px;
 }
 
 .app-conteudo {
-    margin-left: 220px;
     flex: 1;
     min-width: 0;
-    width: calc(100% - 220px);
 }
 
 /* Responsividade */
@@ -144,20 +145,15 @@ footer {
         font-size: 14px;
     }
 
-    .app-conteudo {
-        margin-left: 180px;
-        width: calc(100% - 180px);
+    .app-layout {
+        padding-left: 180px;
     }
 }
 
 @media (max-width: 600px) {
     .app-layout {
         flex-direction: column;
-    }
-
-    .app-conteudo {
-        margin-left: 0;
-        width: 100%;
+        padding-left: 0;
     }
 
     .containerPrincipal {

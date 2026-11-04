@@ -4,6 +4,7 @@ import Login from "./Pages/Login";
 import Sobre from "./Pages/sobre";
 import Sidebar from "./Pages/Sidebar";
 import Kanban from "./fragmentos/Kanban";
+import "./App.css";
 
 
 

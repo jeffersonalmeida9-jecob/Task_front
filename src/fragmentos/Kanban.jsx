@@ -61,6 +61,7 @@ function Kanban() {
   }
 
   async function salvarTarefa(dados) {
+    
     if (dados.id) {
       const resposta = await api.put(`/tarefas/${dados.id}`, dados);
       setTarefas(tarefas.map((t) => (t.id === dados.id ? resposta.data : t)));
@@ -120,9 +121,6 @@ function Kanban() {
               <div className="kanban-coluna-header">
                 <h2>A Fazer</h2>
                 <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                  <span className="kanban-contador">
-                    {tarefas.filter((tarefa) => tarefa.coluna === "afazer").length}
-                  </span>
                   <button className="kanban-btn-add" onClick={() => abrirModalCriar("afazer")}>+</button>
                 </div>
               </div>
@@ -141,9 +139,6 @@ function Kanban() {
               <div className="kanban-coluna-header">
                 <h2>Em Andamento</h2>
                 <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                  <span className="kanban-contador">
-                    {tarefas.filter((tarefa) => tarefa.coluna === "andamento").length}
-                  </span>
                   <button className="kanban-btn-add" onClick={() => abrirModalCriar("andamento")}>+</button>
                 </div>
               </div>
@@ -162,9 +157,6 @@ function Kanban() {
               <div className="kanban-coluna-header">
                 <h2>Concluído</h2>
                 <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                  <span className="kanban-contador">
-                    {tarefas.filter((tarefa) => tarefa.coluna === "concluido").length}
-                  </span>
                   <button className="kanban-btn-add" onClick={() => abrirModalCriar("concluido")}>+</button>
                 </div>
               </div>
