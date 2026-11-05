@@ -60,8 +60,9 @@ function Kanban() {
     setModalAberto(true);
   }
 
+  
   async function salvarTarefa(dados) {
-    
+  
     if (dados.id) {
       const resposta = await api.put(`/tarefas/${dados.id}`, dados);
       setTarefas(tarefas.map((t) => (t.id === dados.id ? resposta.data : t)));
@@ -94,101 +95,101 @@ function Kanban() {
     }
   }
 
-    return (
-  <div id="App">
-    <Header 
-      titulo="TaskFlow - Mini Kanban" 
-      subtitulo="Organize suas tarefas"
-      afazer={tarefas.filter((tarefa) => tarefa.coluna === "afazer").length}
-      andamento={tarefas.filter((tarefa) => tarefa.coluna === "andamento").length}
-      concluidas={tarefas.filter((tarefa) => tarefa.coluna === "concluido").length} 
-    />
-    
-    <main className="container">
-      {carregando && (
-        <p style={{ textAlign: 'center', color: '#94A3B8' }}>Carregando tarefas...</p>
-      )}
-      
-      {erro && (
-        <p style={{ textAlign: 'center', color: '#EF4444' }}>{erro}</p>
-      )}
+  return (
+    <div id="App">
+      <Header 
+        titulo="TaskFlow - Mini Kanban" 
+        subtitulo="Organize suas tarefas"
+        afazer={tarefas.filter((tarefa) => tarefa.coluna === "afazer").length}
+        andamento={tarefas.filter((tarefa) => tarefa.coluna === "andamento").length}
+        concluidas={tarefas.filter((tarefa) => tarefa.coluna === "concluido").length} 
+      />
 
-      {!carregando && !erro && (
-        <>
-          <div className={styles.colunas}>
-            {/* A FAZER */}
-            <div className={styles.coluna}>
-              <div className="kanban-coluna-header">
-                <h2>A Fazer</h2>
-                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                  <button className="kanban-btn-add" onClick={() => abrirModalCriar("afazer")}>+</button>
+      <main className="container">
+        {carregando && (
+          <p style={{ textAlign: 'center', color: '#94A3B8' }}>Carregando tarefas...</p>
+        )}
+
+        {erro && (
+          <p style={{ textAlign: 'center', color: '#EF4444' }}>{erro}</p>
+        )}
+
+        {!carregando && !erro && (
+          <>
+            <div className={styles.colunas}>
+              {/* A FAZER */}
+              <div className={styles.coluna}>
+                <div className="kanban-coluna-header">
+                  <h2>A Fazer</h2>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                    <button className="kanban-btn-add" onClick={() => abrirModalCriar("afazer")}>+</button>
+                  </div>
                 </div>
+                <ListarTarefas 
+                  tarefas={tarefas.filter((t) => t.coluna === "afazer")} 
+                  onDeletar={deletarTarefa} 
+                  onEditar={abrirModalEditar} 
+                  onMover={moverTarefa} 
+                  colunaAnterior={null} 
+                  colunaProxima="andamento" 
+                />
               </div>
-              <ListarTarefas 
-                tarefas={tarefas.filter((t) => t.coluna === "afazer")} 
-                onDeletar={deletarTarefa} 
-                onEditar={abrirModalEditar} 
-                onMover={moverTarefa} 
-                colunaAnterior={null} 
-                colunaProxima="andamento" 
-              />
+
+              {/* EM ANDAMENTO */}
+              <div className={styles.coluna}>
+                <div className="kanban-coluna-header">
+                  <h2>Em Andamento</h2>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                    <button className="kanban-btn-add" onClick={() => abrirModalCriar("andamento")}>+</button>
+                  </div>
+                </div>
+                <ListarTarefas 
+                  tarefas={tarefas.filter((t) => t.coluna === "andamento")} 
+                  onDeletar={deletarTarefa} 
+                  onEditar={abrirModalEditar} 
+                  onMover={moverTarefa} 
+                  colunaAnterior="afazer" 
+                  colunaProxima="concluido" 
+                />
+              </div>
+
+              {/* CONCLUÍDO */}
+              <div className={styles.coluna}>
+                <div className="kanban-coluna-header">
+                  <h2>Concluído</h2>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                    <button className="kanban-btn-add" onClick={() => abrirModalCriar("concluido")}>+</button>
+                  </div>
+                </div>
+                <ListarTarefas 
+                  tarefas={tarefas.filter((t) => t.coluna === "concluido")} 
+                  onDeletar={deletarTarefa} 
+                  onEditar={abrirModalEditar} 
+                  onMover={moverTarefa} 
+                  colunaAnterior="andamento" 
+                  colunaProxima={null} 
+                />
+              </div>
             </div>
 
-            {/* EM ANDAMENTO */}
-            <div className={styles.coluna}>
-              <div className="kanban-coluna-header">
-                <h2>Em Andamento</h2>
-                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                  <button className="kanban-btn-add" onClick={() => abrirModalCriar("andamento")}>+</button>
-                </div>
-              </div>
-              <ListarTarefas 
-                tarefas={tarefas.filter((t) => t.coluna === "andamento")} 
-                onDeletar={deletarTarefa} 
-                onEditar={abrirModalEditar} 
-                onMover={moverTarefa} 
-                colunaAnterior="afazer" 
-                colunaProxima="concluido" 
-              />
-            </div>
+            <ModalTarefa 
+              aberto={modalAberto} 
+              onFechar={() => setModalAberto(false)} 
+              onSalvar={salvarTarefa} 
+              tarefa={tarefaEditando} 
+              coluna={colunaAtiva} 
+              prioridades={listaPrioridades} 
+              usuarios={listaUsuarios} 
+              projetos={listaProjetos} 
+            />
+          </>
+        )}
+      </main>
 
-            {/* CONCLUÍDO */}
-            <div className={styles.coluna}>
-              <div className="kanban-coluna-header">
-                <h2>Concluído</h2>
-                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                  <button className="kanban-btn-add" onClick={() => abrirModalCriar("concluido")}>+</button>
-                </div>
-              </div>
-              <ListarTarefas 
-                tarefas={tarefas.filter((t) => t.coluna === "concluido")} 
-                onDeletar={deletarTarefa} 
-                onEditar={abrirModalEditar} 
-                onMover={moverTarefa} 
-                colunaAnterior="andamento" 
-                colunaProxima={null} 
-              />
-            </div>
-          </div>
-
-          <ModalTarefa 
-            aberto={modalAberto} 
-            onFechar={() => setModalAberto(false)} 
-            onSalvar={salvarTarefa} 
-            tarefa={tarefaEditando} 
-            coluna={colunaAtiva} 
-            prioridades={listaPrioridades} 
-            usuarios={listaUsuarios} 
-            projetos={listaProjetos} 
-          />
-        </>
-      )}
-    </main>
-
-    <footer>
-      <p>Jefferson Kauã - 2024</p>
-    </footer>
-  </div>
-);
+      <footer>
+        <p>Jefferson Kauã - 2024</p>
+      </footer>
+    </div>
+  );
 }
 export default Kanban;

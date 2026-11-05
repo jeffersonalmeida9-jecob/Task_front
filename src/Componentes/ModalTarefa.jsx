@@ -23,9 +23,9 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer',
         setErros([]);
         if (tarefa) {
             setTexto(tarefa.texto);
-            setIdPrioridade(tarefa.idprioridade);
-            setIdUsuario(tarefa.idUsuario);
-            setIdProjeto(tarefa.idProjeto);
+            setIdPrioridade(tarefa.prioridade_id);
+            setIdUsuario(tarefa.usuario_id);
+            setIdProjeto(tarefa.projeto_id);
         } else {
             setTexto('');
             setIdPrioridade(2);
@@ -53,9 +53,9 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer',
             id: tarefa?.id, 
             texto, 
             coluna: tarefa?.coluna || coluna,
-            idPrioridade: paraNumero(idPrioridade),
-            idUsuario: paraNumero(idUsuario),
-            idProjeto: paraNumero(idProjeto)
+            prioridade_id: paraNumero(idPrioridade),
+            usuario_id: paraNumero(idUsuario),
+            projeto_id: paraNumero(idProjeto)
          });
         onFechar();
         }
@@ -81,7 +81,7 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='afazer',
                     {/* Select de Prioridade */}
                     <select value={idPrioridade} onChange={e => setIdPrioridade(e.target.value)}>
                       {prioridades.map(p => (
-                        <option key={p.id} value={p.id}>{p.nome}</option>
+                        <option key={p.id} value={p.id}>{p.descricao}</option>
                       ))}
                     </select>
 
