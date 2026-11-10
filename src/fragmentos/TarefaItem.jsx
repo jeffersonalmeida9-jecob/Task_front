@@ -35,23 +35,23 @@ function TarefaItem({ texto, concluida = false, prioridade = "", onDeletar, onEd
                             )}
                         </div>
                     )}
-                    </div>
 
-            <div className={styles.acoesTarefa}>
-                <span className={classePrioridade}>{prioridade}</span>
-                {modoKanban && colunaAnterior && (
-                    <button className={styles.btnMover} onClick={() => onMover(colunaAnterior)} title="Mover para coluna anterior" >
-                        ←
+                <div className={styles.acoesTarefa}>
+                    <span className={classePrioridade}>{prioridade}</span>
+                    {modoKanban && colunaAnterior && (
+                        <button className={styles.btnMover} onClick={() => onMover(colunaAnterior)} title="Mover para coluna anterior" >
+                            ←
+                        </button>
+                    )}
+                    {modoKanban && colunaProxima && (
+                        <button className={styles.btnMover} onClick={() => onMover(colunaProxima)} title="Mover para próxima coluna">
+                            →
+                        </button>
+                    )}
+                    <button className={styles.btnDeletar} onClick={e => {e.stopPropagation(); onDeletar();}}>
+                        X
                     </button>
-                )}
-                {modoKanban && colunaProxima && (
-                    <button className={styles.btnMover} onClick={() => onMover(colunaProxima)} title="Mover para próxima coluna">
-                        →
-                    </button>
-                )}
-                <button className={styles.btnDeletar} onClick={e => {e.stopPropagation(); onDeletar();}}>
-                    X
-                </button>
+                </div>
             </div>
         </li>
     );
